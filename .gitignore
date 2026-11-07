@@ -1,0 +1,9 @@
+# Large datasets
+data/raw/
+data/processed/
+paysim_data.csv
+
+# Python environment
+.venv/
+__pycache__/
+.ipynb_checkpoints/
