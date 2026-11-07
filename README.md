@@ -1,247 +1,223 @@
-# fraud_detection_analysis
-# Reproducing the Project
-<details> <summary><strong>Detailed Instructions</strong></summary>
+# Fraud Detection Analysis
 
-<br>
+## Project Overview
 
-The following instructions explain how to clone the repository, create the Python environment, select the correct Jupyter kernel, run the preprocessing scripts, and open the analysis notebooks.
+This project explores financial transaction patterns associated with fraudulent activity using Python and Power BI. The goal was to investigate transaction behavior, identify potential fraud indicators, and communicate analytical findings through an interactive dashboard.
 
-## Prerequisites
-Before beginning, make sure the following programs are installed:
+The analysis uses the **PaySim synthetic financial transaction dataset**, which contains over 6.3 million simulated transactions. The project focuses on exploratory data analysis, data quality assessment, class imbalance, transaction characteristics, and account balance behavior.
+
+## Tools and Technologies
+
+- **Python:** Data exploration and analysis
+- **pandas and NumPy:** Data manipulation and feature engineering
+- **Matplotlib and Seaborn:** Data visualization
+- **Jupyter Notebook / VS Code:** Interactive analysis
+- **Power BI:** Dashboard development and reporting
+- **uv:** Python environment and dependency management
+- **Git and GitHub:** Version control
+
+## Dataset
+
+The PaySim dataset contains **6,362,620 transactions and 11 original variables**, including transaction types, amounts, account balances, and fraud indicators.
+
+The original dataset includes five transaction types: PAYMENT, TRANSFER, CASH_OUT, CASH_IN, and DEBIT.
+
+The target variable, `isFraud`, identifies transactions labeled as fraudulent within the simulation.
+
+**Note:** PaySim is a synthetic dataset. Findings are intended to demonstrate analytical techniques and should not be interpreted as representative of real-world banking fraud.
+
+The raw dataset is not included in this repository because of its size. It must be obtained separately before reproducing the full analysis.
+
+## Analysis Workflow
+
+### 1. Data Exploration and Quality Assessment
+
+- Loaded and inspected the original dataset using pandas.
+- Examined data types, dataset dimensions, and descriptive statistics.
+- Evaluated missing values and duplicate records.
+- Investigated unique values and transaction distributions.
+
+The initial assessment identified no missing values or exact duplicate records.
+
+### 2. Fraud Distribution and Class Imbalance
+
+Analyzed the distribution of fraudulent and legitimate transactions.
+
+| Classification | Transactions | Percentage |
+|---|---:|---:|
+| Legitimate | 6,354,407 | 99.87% |
+| Fraudulent | 8,213 | 0.13% |
+
+The dataset is highly imbalanced, highlighting why classification accuracy alone would be insufficient for evaluating a fraud detection model.
+
+### 3. Fraud Patterns by Transaction Type
+
+Compared transaction volume, fraud counts, and fraud rates across transaction types.
+
+| Transaction Type | Fraud Cases | Fraud Rate |
+|---|---:|---:|
+| TRANSFER | 4,097 | 0.77% |
+| CASH_OUT | 4,116 | 0.18% |
+| CASH_IN | 0 | 0.00% |
+| DEBIT | 0 | 0.00% |
+| PAYMENT | 0 | 0.00% |
+
+TRANSFER transactions had the highest fraud rate, while CASH_OUT transactions accounted for slightly more fraud cases overall.
+
+### 4. Transaction Amount Analysis
+
+Compared transaction amounts between fraudulent and legitimate transactions using summary statistics.
+
+- Median legitimate transaction: approximately $74,685
+- Median fraudulent transaction: approximately $441,423
+- Fraudulent transactions had substantially higher median amounts overall.
+
+Additional analysis by transaction type showed that the relationship between transaction amount and fraud status varied across categories.
+
+### 5. Account Balance Analysis
+
+Created derived variables to investigate changes in originating and destination account balances.
+
+The analysis identified an unusual relationship between originating account balance consistency and fraud labels.
+
+Because the dataset is synthetic, this finding requires careful interpretation and may reflect characteristics of the simulation rather than real-world fraud behavior.
+
+### 6. Power BI Dashboard
+
+Prepared transaction-level and aggregated datasets for Power BI.
+
+The dashboard presents:
+
+- Total transaction volume
+- Total fraudulent transactions
+- Overall fraud rate
+- Fraud cases by transaction type
+- Fraud rates by transaction type
+
+The dashboard uses full-dataset summary statistics to preserve accurate overall metrics.
+
+## Key Findings
+
+1. Fraudulent transactions represented only **0.13%** of the dataset, demonstrating substantial class imbalance.
+2. TRANSFER transactions had the highest fraud rate at approximately **0.77%**.
+3. CASH_OUT transactions accounted for the greatest number of fraudulent transactions, with **4,116 cases**.
+4. Fraudulent transactions generally involved higher amounts, although this relationship differed by transaction type.
+5. Account balance patterns revealed potentially useful relationships that require additional investigation and consideration of synthetic data limitations.
+
+These findings demonstrate the importance of evaluating fraud through multiple dimensions rather than relying on a single indicator.
+
+## Project Structure
+
+```text
+fraud_detection_analysis/
+├── data/
+│   ├── raw/
+│   └── processed/
+├── notebooks/
+│   └── fraud_analysis.ipynb
+├── powerbi/
+│   └── fraud_dashboard.pbix
+├── src/
+│   └── analysis.py
+├── pyproject.toml
+├── uv.lock
+└── README.md
+```
+
+The `data/raw/` and `data/processed/` directories are excluded from Git tracking to avoid committing large datasets.
+
+## Reproducing the Project
+
+### Prerequisites
+
+Install the following tools:
+
 - Git
 - Python
 - uv
-- Visual Studio Code with the Python and Jupyter extensions, or JupyterLab
+- Visual Studio Code with Python and Jupyter extensions
+- Power BI Desktop (Windows) to open the dashboard
 
-To confirm that Git and uv are installed, open a terminal and run:
+### 1. Clone the Repository
 
-```bash
-git --version
-uv --version
-```
-
-If both commands return version numbers, the required tools are available.
-
-## 1. Clone the Repository
-
-Open PowerShell, Windows Terminal, or another terminal and navigate to the folder where you want to store the project.
-
-Clone the GitHub repository:
-
-git clone https://github.com/abeaderstadt/fraud_detection_analysis
-
-Move into the project directory:
-
+```powershell
+git clone https://github.com/abeaderstadt/fraud_detection_analysis.git
 cd fraud_detection_analysis
-
-## 2. Create the Python Environment
-
-This project uses uv to manage Python and project dependencies.
-
-Install the required Python version listed in the project configuration:
-
-```bash
-uv python install
 ```
 
-Create the virtual environment and install all project dependencies:
+### 2. Set Up the Python Environment
 
-```bash
+This project uses uv to manage dependencies.
+
+```powershell
+uv python install
 uv sync
 ```
 
-This command creates a local .venv folder and installs the packages listed in pyproject.toml and uv.lock.
+### 3. Open the Project
 
-To confirm that the environment was created successfully, run:
-```bash
-uv run python --version
-```
-
-You can also confirm that the required packages are installed by running:
-
-```bash
-uv pip list
-```
-
-## 3. Open the Project in Visual Studio Code
-
-From the project directory, launch Visual Studio Code:
-
+```powershell
 code .
-
-If the code command is unavailable, open Visual Studio Code manually and select:
-
-File → Open Folder
-
-Then choose the fraud_detection_analysis folder.
-
-## 4. Select the Python Interpreter
-
-In Visual Studio Code:
-
-Open the Command Palette by pressing Ctrl+Shift+P.
-Search for:
-Python: Select Interpreter
-Select the Python interpreter located inside the project's .venv folder.
-
-On Windows, it will usually look similar to:
-
-.venv\Scripts\python.exe
-
-After selecting the interpreter, Visual Studio Code should use the project's virtual environment when running Python files.
-
-## 5. Select the Jupyter Kernel
-
-Open one of the notebooks in the notebooks folder:
-
-notebooks/fraud_analysis.ipynb
-
-or:
-
-notebooks/
-
-In the upper-right corner of the notebook, click Select Kernel.
-
-Choose:
-
-Python Environments
-
-Then select the interpreter from the project's `.venv` folder.
-
-On Windows, the selected kernel should point to something similar to:
-
-.venv\Scripts\python.exe
-
-If the environment does not appear in the kernel list:
-
-1. Open the Command Palette with `Ctrl+Shift+P`.
-2. Select:
-Developer: Reload Window
-1. Reopen the notebook and select the kernel again.
-
-You can verify that the correct kernel is active by running the following code in a notebook cell:
-
-import sys
-
-print(sys.executable)
-
-The output should include the project directory and `.venv`.
-
-## 6. Confirm the Data Files
-
-The repository contains separate folders for raw and processed data:
-
-data/
-├── raw/
-└── processed/
-
-The preprocessing script reads the original paysim dataset from data/raw/ and save cleaned datasets to data/processed/.
-
-Before running the preprocessing workflow, confirm that the required raw CSV files are present in the data/raw/ folder.
-
-## 7. Run the Data-Processing Scripts
-
-The raw dataset is included in the `data/raw/` directory. To recreate the processed datasets used in the analysis, run the preprocessing script from the project root:
-
-```bash
-uv run python src/analysis.py
 ```
 
-The script will clean and transform the raw file and save the resulting datasets to:
+In VS Code, open `notebooks/fraud_analysis.ipynb` and select the Python kernel from the project's `.venv` environment.
 
+### 4. Obtain the Dataset
+
+Download the PaySim synthetic financial transaction dataset and save the original CSV as:
+
+```text
+data/raw/paysim_data.csv
+```
+
+The dataset is publicly available through Kaggle:
+
+[PaySim Synthetic Financial Datasets for Fraud Detection](https://www.kaggle.com/datasets/ealaxi/paysim1)
+
+### 5. Run the Analysis
+
+Open:
+
+```text
+notebooks/fraud_analysis.ipynb
+```
+
+Run the notebook cells in sequence to reproduce the exploratory analysis, derived features, and Power BI data exports.
+
+The processed CSV files are saved in:
+
+```text
 data/processed/
+```
 
-After running the script, review the terminal output for validation messages, dataset dimensions, missing-value summaries, or errors.
+### 6. Open the Power BI Dashboard
 
+Open the Power BI report:
 
-## 9. Run the Notebook
+```text
+powerbi/fraud_dashboard.pbix
+```
 
-To reproduce all notebook outputs, select:
+The report uses processed datasets generated from the Python analysis.
 
-Run → Run All Cells
+If Power BI cannot locate the CSV files, update their paths in **Transform Data → Data source settings**, then refresh the report.
 
-Run the notebooks in the following order:
+## Project Limitations
 
-1. notebooks/fraud_analysis.ipynb
+- The dataset contains simulated rather than real banking transactions.
+- Fraud labels and transaction characteristics may reflect simulation-specific assumptions.
+- The analysis is exploratory and does not establish causal relationships.
+- A fraud-enriched transaction sample was created for exploration; overall dashboard metrics are calculated from the complete dataset.
+- No production fraud detection system was developed or deployed.
 
-Make sure the project's .venv kernel remains selected before running the cells.
+## Future Improvements
 
-The notebooks read the cleaned datasets from:
+Potential next steps include evaluating classification models, investigating precision and recall, exploring fraud detection thresholds, and testing additional features for identifying suspicious transactions.
 
-data/processed/
+## Author
 
-Some notebook cells may save charts or other visual outputs to:
+**Alissa Beaderstadt**
 
-figures/
+M.S. Data Analytics
 
-## 10. Run Jupyter Notebook from Visual Studio Code
-
-The notebooks can also be run directly inside Visual Studio Code.
-
-After opening a notebook and selecting the `.venv` kernel:
-
-1. Click Run All near the top of the notebook.
-2. Allow each cell to finish before reviewing the output.
-3. Confirm that no cells display errors.
-4. Save the notebook after the outputs have been generated.
-
-The kernel name shown in the upper-right corner should correspond to the project's `.venv` environment.
-
-
-## Troubleshooting
-The uv command is not recognized
-
-Install uv, close the terminal, open a new terminal, and run:
-
-uv --version
-The virtual environment does not appear in Visual Studio Code
-
-Run:
-
-uv sync
-
-Then reload Visual Studio Code:
-
-Ctrl+Shift+P → Developer: Reload Window
-
-After reloading, select the interpreter again.
-
-The notebook cannot find a package
-
-Confirm that the correct kernel is selected and run:
-
-uv sync
-
-Then restart the notebook kernel.
-
-The notebook cannot find a data file
-
-Make sure the notebook is being run from the cloned repository and that the required files exist in:
-
-data/raw/
-
-and:
-
-data/processed/
-
-Run the preprocessing scripts before running the notebooks.
-
-File paths fail when running a script
-
-Run all commands from the repository root:
-
-cd fraud_detection_analysis
-
-Then run the script using its full relative path:
-
-uv run python src/data_processing/<script_name>.py
-
-## Command Summary
-git clone https://github.com/abeaderstadt/fraud_detection_analysis
-cd fraud_detection_analysis
-
-uv python install
-uv sync
-
-uv run python src/analysis.py
-
+[GitHub](https://github.com/abeaderstadt)
